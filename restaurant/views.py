@@ -5,10 +5,10 @@ from rest_framework.response import Response
 from .serializers import CategorySerializers
 
 @api_view(['GET', 'POST'])
-def category(request):
+def category_list(request):
     if request.method == 'GET':
-        category_1 = Category.objects.all()
-        serializer = CategorySerializers(category_1, many = True)
+        category = Category.objects.all()
+        serializer = CategorySerializers(category, many = True)
         return Response (serializer.data)
     elif request.method == 'POST':
         serializer = CategorySerializers(data = request.data)
