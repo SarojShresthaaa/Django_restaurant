@@ -44,7 +44,10 @@ class CategoryDetails(APIView):
             return Response("Data is deleted", status.HTTP_204_NO_CONTENT)
         
 
-class FoodView(APIView):
+
+#--------------------------------------------------------------------------------------------------
+# CLASS BASED VIEW FOR FOOD
+class FoodList(APIView):
     def get(self, request):
         all_foods = Food.objects.all()
         serializer = FoodSerializers(all_foods, many=True)
@@ -54,6 +57,24 @@ class FoodView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    
+class FoodDetail(APIView):
+    def get(self, request, id):
+        food = Food.objects.get(id = id)
+        serializer = FoodSerializers(food)
+        return Response(serializer.data)
+    
+    def put(self, request, id):
+        food = Food.objects.get(id = id)
+        serializer = FoodSerializers(food, data = request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+    def delete(self, request, id):
+        food = Food.objects.get(id = id)
+        food.delete()
+        return Response("Data is deleted", status.HTTP_204_NO_CONTENT )
 
 
 
@@ -91,6 +112,7 @@ class FoodView(APIView):
 #         return Response("Data has been deleted", status.HTTP_204_NO_CONTENT)
         
 
+#--------------------------------------------------------------------------------------------------
 # Function based views for FOOD
 # @api_view(['GET', 'POST'])
 # def food_view(request):
